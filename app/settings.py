@@ -5,9 +5,9 @@ from pathlib import Path
 from decouple import config
 from django.contrib.messages import constants as messages
 
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-from sentry_sdk.integrations.redis import RedisIntegration
+# import sentry_sdk
+# from sentry_sdk.integrations.django import DjangoIntegration
+# from sentry_sdk.integrations.redis import RedisIntegration
 
 # sentry_sdk.init(
 #     dsn=config('SENTRY_DSN', ''),
@@ -20,7 +20,7 @@ from sentry_sdk.integrations.redis import RedisIntegration
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='example_secret_key')
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['localhost', '0.0.0.0', config('DOMAIN', default='localhost')]
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = []
 for hostname in ALLOWED_HOSTS:
@@ -30,11 +30,15 @@ for hostname in ALLOWED_HOSTS:
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'demo',
+    'django_select2',
 ]
 
 MIDDLEWARE = [
@@ -82,28 +86,28 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# DATABASES = {
-#     'sqlite3': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     },
-#     'postgresql': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': config('DB_NAME', default='postgres'),
-#         'USER': config('DB_USER', default='postgres'),
-#         'PASSWORD': config('DB_PASS', default=''),
-#         'HOST': config('DB_HOST', default='127.0.0.1'),
-#         'PORT': config('DB_PORT', default='5432'),
-#     },
-#     'mysql': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': config('DB_NAME', default='root'),
-#         'USER': config('DB_USER', default='root'),
-#         'PASSWORD': config('DB_PASS', default=''),
-#         'HOST': config('DB_HOST', default='127.0.0.1'),
-#         'PORT': config('DB_PORT', default='3306'),
-#     },
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    #     'postgresql': {
+    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #         'NAME': config('DB_NAME', default='postgres'),
+    #         'USER': config('DB_USER', default='postgres'),
+    #         'PASSWORD': config('DB_PASS', default=''),
+    #         'HOST': config('DB_HOST', default='127.0.0.1'),
+    #         'PORT': config('DB_PORT', default='5432'),
+    #     },
+    #     'mysql': {
+    #         'ENGINE': 'django.db.backends.mysql',
+    #         'NAME': config('DB_NAME', default='root'),
+    #         'USER': config('DB_USER', default='root'),
+    #         'PASSWORD': config('DB_PASS', default=''),
+    #         'HOST': config('DB_HOST', default='127.0.0.1'),
+    #         'PORT': config('DB_PORT', default='3306'),
+    #     },
+}
 
 # Caching Configuration
 REDIS_HOST = config('REDIS_HOST', default=None)
